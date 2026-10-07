@@ -123,6 +123,9 @@ if "file_data" in st.session_state:
     throw_ratio_col = st.selectbox("Select the throw ratio column", df.columns.to_list(), key="throw_ratio_col")
     optional_cols = ["- none -"] + df.columns.tolist()
     model_col = st.selectbox("Select the model name column", optional_cols, key="model_col")
+    map_col = st.selectbox("Select the MAP Price column", optional_cols, key="map_col")
+    dealer_price_col = st.selectbox("Select the Dealer Price column", optional_cols, key="dealer_price_col")
+    gov_ed_col = st.selectbox("Select the Gov/Ed Price column", optional_cols, key="gov_ed_col")
     lumens_col = st.selectbox("Select the lumens column", optional_cols, key="lumens_col")
     resolution_col = st.selectbox("Select the resoultion column", optional_cols, key="resolution_col")
     
@@ -146,6 +149,21 @@ if "file_data" in st.session_state:
         
             if model_col != "- none -":
                 display_cols["Model"] = matched[model_col]
+            
+            if map_col != "- none -":
+                display_cols["MAP Price"] = matched[map_col]
+            
+            if dealer_price_col != "- none -":
+                display_cols["Dealer Price"] = matched[dealer_price_col]
+            
+            if gov_ed_col != "- none -":
+                display_cols["Gov/Ed Price"] = matched[gov_ed_col]
+                
+            for col in ["MAP Price", "Dealer Price", "Gov/Ed Price"]:
+                if col in display_cols:
+                    display_cols[col] = display_cols[col].apply(
+                        lambda x: f"${x:,.2f}" if pd.notna(x) and str(x).strip() != "" else ""
+                    )
         
             if resolution_col != "- none -":
                 display_cols["Resolution"] = matched[resolution_col]
