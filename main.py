@@ -136,10 +136,9 @@ if "file_data" in st.session_state:
     working = working.dropna(subset=["_ratio_min", "_ratio_max"])
     
     if ratio:
-        tolerance = 0.05
         matched = working[
-            (working["_ratio_min"] <= ratio + tolerance) &
-            (working["_ratio_max"] >= ratio - tolerance)
+            (working["_ratio_min"] <= ratio) &
+            (working["_ratio_max"] >= ratio)
         ]
         
         if matched.empty:
